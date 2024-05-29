@@ -13,9 +13,9 @@ from ionex_formatter.ionex_map import (
 
 class TestMapFormating():
 
-    @pytest.fixture
-    def formatter(self):
-        return IonexFile()
+   # @pytest.fixture
+   # def formatter(self):
+   #     return IonexFile()
 
     @pytest.fixture
     def sample_map_lines(self):

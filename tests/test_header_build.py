@@ -18,6 +18,8 @@ comment = [
     "IGS GPS stations used in the computations:                  "
 ]
 
+comment2 = "TEC values in  0.1 TECUs; 9999 if no value available        "
+
 sites = [
     "019b", "ab02", "ab06", "ab09", "ab11", "ab12", "ab13", "ab25", "ab27", "ab33",
     "ab37", "ab41", "ab42", "ab44", "ab45", "ab49", "abmf", "abpo", "ac03", "ac12",
@@ -73,18 +75,25 @@ class TestIonexHeaderBuild():
                      "GPS                 IONEX VERSION / TYPE"]
         assert formatter.header["IONEX VERSION / TYPE"] == expected
 
+    def test_comment_second(self):
+        formatter = IonexFile()
+        formatter.add_comment(comment2)
+        #expected  = ["ue available                                                COMMENT            "]
+        expected = ["TEC values in 0.1 TECUs; 9999 if no value available         COMMENT             "]
+        assert formatter.header["COMMENT"] == expected
+
     def test_comment(self):
         formatter = IonexFile()
         formatter.add_comment(comment)
         formatter.add_comment(comment)
         expected  = [
-            "TEC values in  0.1 TECUs; 9999 if no val"  
-            "ue available        COMMENT             ", 
-            "IGS GPS stations used in the computation" 
+            "TEC values in  0.1 TECUs; 9999 if no val"
+            "ue available        COMMENT             ",
+            "IGS GPS stations used in the computation"
             "s:                  COMMENT             ",
-            "TEC values in  0.1 TECUs; 9999 if no val"  
-            "ue available        COMMENT             ", 
-            "IGS GPS stations used in the computation" 
+            "TEC values in  0.1 TECUs; 9999 if no val"
+            "ue available        COMMENT             ",
+            "IGS GPS stations used in the computation"
             "s:                  COMMENT             "
         ]
         assert formatter.header["COMMENT"] == expected

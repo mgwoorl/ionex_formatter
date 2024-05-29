@@ -62,3 +62,45 @@ class TestIoneHeaderFormat:
         header = IonexHeader_V_1_1()
         with pytest.raises(TypeError):
             header.load_descriptions(corrupted_descrition_path)
+
+    def test_update(self, tmp_path):
+        with open("ionex_formatter/header_line_descriptions.json", "r") as f:
+            corrupted_descrition = json.load(f)
+        del corrupted_descrition["COMMENT"]
+        corrupted_descrition_path = tmp_path / "corrupted_descriptions.json"
+        with open(corrupted_descrition_path, "w") as f:
+            corrupted_descrition = json.dump(corrupted_descrition, f)
+        header = IonexHeader_V_1_1()
+        header._update()
+        with pytest.raises(FormatDescriptionLabelMissing):
+            header.init_fields(corrupted_descrition_path)
+
+    def test_load_with_error(self, tmp_path):
+        with open("ionex_formatter/header_line_descriptions.json", "r") as f:
+            corrupted_descrition = json.load(f)
+        del corrupted_descrition["COMMENT"]
+        corrupted_descrition_path = tmp_path / "corrupted_descriptions.json"
+        with open(corrupted_descrition_path, "w") as f:
+            corrupted_descrition = json.dump(corrupted_descrition, f)
+        header = IonexHeader_V_1_1()
+        header._update()
+        with pytest.raises(FormatDescriptionLabelMissing):
+            header.init_fields(corrupted_descrition_path)
+
+    def test_line_tokens(self, tmp_path):
+        label = "MAPPING FUNCTION"
+        header = IonexHeader_V_1_1()
+        res = header.line_tokens(label)
+        out = None
+        assert res == out
+
+    def test_load_descriptions_not_found(self, tmp_path):
+        path = "ftp/test.json"
+        header = IonexHeader_V_1_1()
+        with pytest.raises(FileNotFoundError):
+            header.load_descriptions(path)
+    
+    def test_load_txt_with_error(self, tmp_path):
+        header_test = IonexHeader_V_1_1()
+        with pytest.raises(TypeError):
+            header_test.load_descriptions("ionex_formatter/test.txt")

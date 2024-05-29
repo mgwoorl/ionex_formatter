@@ -68,8 +68,7 @@ class TestSpatialGridDimensions():
 
         chunks = rng.get_chunks(0)
         assert chunks == expected
-
-        
+    
     def test_finate_range_zero_step_raises(self):
         with pytest.raises(FiniteRangeZeroStepError):
             SpatialRange(400.0, 450.0, 0.0)
@@ -84,11 +83,11 @@ class TestSpatialGridDimensions():
             
     def test_max_decimal_reduce_accuracy_raises(self):
         with pytest.raises(DecimalDigitReduceAccuracyError):
-            SpatialRange(0.0, 1.125, 0.125, decimal=2)
+            SpatialRange(10.999, 20.0, 0.0, decimal=2)
 
     def test_min_decimal_reduce_accuracy_raises(self):
         with pytest.raises(DecimalDigitReduceAccuracyError):
-            SpatialRange(0.125, 1.0, 0.125, decimal=2)
+            SpatialRange(0.0, 1.999, 0.0, decimal=2)
 
 
 
